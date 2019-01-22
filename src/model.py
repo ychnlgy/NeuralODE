@@ -35,6 +35,17 @@ class OdeConv2d(torch.nn.Conv2d):
         X = torch.cat([t, self.pre(X)], dim=1)
         return self.post(super(ODEConv2d, self).forward(X))
 
+class OdeSequential(torch.nn.Module):
+
+    def __init__(self, *args):
+        super(OdeSequential, self).__init__()
+        self.odeconvs = torch.nn.ModuleList(args)
+
+    def forward(self, t, X):
+        for odeconv in self.odeconvs:
+            X = odeconv(t, X)
+        return X
+
 class OdeBlock(torch.nn.Module):
 
     def __init__(self, *odeconvs, eval_times=[0, 1]):
@@ -47,7 +58,7 @@ class OdeBlock(torch.nn.Module):
 
         '''
         super(OdeBlock, self).__init__()
-        self.f = torch.nn.Sequential(*odeconvs)
+        self.f = OdeSequential(*odeconvs)
         self.register_buffer("t", torch.FloatTensor(eval_times))
 
     def forward(self, X, i=-1):
