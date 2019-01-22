@@ -14,7 +14,7 @@ class OdeConv2d(torch.nn.Conv2d):
             post - torch.nn.Sequential operation after convolution is applied. Default: identity operation.
 
         '''
-        super(ODEConv2d, self).__init__(in_channels+1, *args, **kwargs)
+        super(OdeConv2d, self).__init__(in_channels+1, *args, **kwargs)
         self.pre = pre
         self.post = post
 
