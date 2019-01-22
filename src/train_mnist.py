@@ -8,7 +8,9 @@ def mismatch(Yh, Y):
     return (Yh.max(dim=1)[1] == Y).float().mean().item()
 
 @util.main
-def main():
+def main(random=0):
+
+    random = int(random)
 
     DEVICE = ["cpu", "cuda"][torch.cuda.is_available()]
     BATCHSIZE = 128
@@ -24,58 +26,61 @@ def main():
     valid_loader = datasets.util.create_loader(TESTBATCH, valid_X, valid_Y)
     test_loader  = datasets.util.create_loader(TESTBATCH, test_X,  test_Y)
 
-    MODEL = torch.nn.Sequential(
+    if random:
+        MODEL = modules.RandomChance(CLASSES)
+    else:
+        MODEL = torch.nn.Sequential(
 
-        torch.nn.Conv2d(CHANNELS, 32, 5, padding=2),
-        torch.nn.BatchNorm2d(32),
-        torch.nn.ReLU(),
+            torch.nn.Conv2d(CHANNELS, 32, 5, padding=2),
+            torch.nn.BatchNorm2d(32),
+            torch.nn.ReLU(),
 
-        torch.nn.Conv2d(32, 64, 3, padding=1),
-        torch.nn.MaxPool2d(2), # 32 -> 16
-        torch.nn.BatchNorm2d(64),
-        torch.nn.ReLU(),
+            torch.nn.Conv2d(32, 64, 3, padding=1),
+            torch.nn.MaxPool2d(2), # 32 -> 16
+            torch.nn.BatchNorm2d(64),
+            torch.nn.ReLU(),
 
-        torch.nn.Conv2d(64, 64, 3, padding=1),
-        torch.nn.MaxPool2d(2), # 16 -> 8
-        torch.nn.BatchNorm2d(64),
-        torch.nn.ReLU(),
+            torch.nn.Conv2d(64, 64, 3, padding=1),
+            torch.nn.MaxPool2d(2), # 16 -> 8
+            torch.nn.BatchNorm2d(64),
+            torch.nn.ReLU(),
 
-        model.OdeBlock(
+            model.OdeBlock(
 
-            model.OdeConv2d(64, 64, 3, padding=1,
-                pre=torch.nn.Sequential(
-                    torch.nn.BatchNorm2d(64),
-                    torch.nn.ReLU()
+                model.OdeConv2d(64, 64, 3, padding=1,
+                    pre=torch.nn.Sequential(
+                        torch.nn.BatchNorm2d(64),
+                        torch.nn.ReLU()
+                    )
+                ),
+
+                model.OdeConv2d(64, 64, 3, padding=1,
+                    pre = torch.nn.Sequential(
+                        torch.nn.BatchNorm2d(64),
+                        torch.nn.ReLU()
+                    ),
+                    post = torch.nn.Sequential(
+                        torch.nn.BatchNorm2d(64)
+                    )
                 )
+                
             ),
 
-            model.OdeConv2d(64, 64, 3, padding=1,
-                pre = torch.nn.Sequential(
-                    torch.nn.BatchNorm2d(64),
-                    torch.nn.ReLU()
-                ),
-                post = torch.nn.Sequential(
-                    torch.nn.BatchNorm2d(64)
-                )
-            )
+            torch.nn.BatchNorm2d(64),
+            torch.nn.ReLU(),
+
+            torch.nn.AvgPool2d(2),
+
+            torch.nn.Conv2d(64, 128, 3, padding=1),
+            torch.nn.BatchNorm2d(128),
+            torch.nn.ReLU(),
+
+            torch.nn.AvgPool2d(4), 
             
-        ),
+            modules.Reshape(128),
 
-        torch.nn.BatchNorm2d(64),
-        torch.nn.ReLU(),
-
-        torch.nn.AvgPool2d(2),
-
-        torch.nn.Conv2d(64, 128, 3, padding=1),
-        torch.nn.BatchNorm2d(128),
-        torch.nn.ReLU(),
-
-        torch.nn.AvgPool2d(4), 
-        
-        modules.Reshape(128),
-
-        torch.nn.Linear(128, CLASSES),
-    ).to(DEVICE)
+            torch.nn.Linear(128, CLASSES),
+        ).to(DEVICE)
 
     print("Parameters: %d" % sum(torch.numel(p) for p in MODEL.parameters() if p.requires_grad))
 
