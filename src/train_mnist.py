@@ -136,4 +136,4 @@ def main():
 
             test_e /= n
 
-            print("Train: %.4f | Valid: %.4f | Test: %.4f" % (train_e, valid_e, test_e))
+            print("Epoch %d | Train: %.4f | Valid: %.4f | Test: %.4f" % (epoch, train_e, valid_e, test_e))
