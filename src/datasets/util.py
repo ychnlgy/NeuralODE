@@ -16,6 +16,15 @@ def create_loader(batch, X, Y=None):
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch, shuffle=True)
     return dataloader
 
+def validation_split(p, X, Y):
+    N = len(X)
+    P = int(N * p)
+    I = numpy.arange(N)
+    numpy.random.shuffle(I)
+    I_valid = torch.from_numpy(I[:P])
+    I_train = torch.from_numpy(I[P:])
+    return X[I_train], Y[I_train], X[I_valid], Y[I_valid]
+
 def pillow_to_tensor(dataset, resize=None):
 
     if resize is None:

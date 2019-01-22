@@ -37,7 +37,7 @@ class OdeConv2d(torch.nn.Conv2d):
 
 class OdeBlock(torch.nn.Module):
 
-    def __init__(self, odeconvs, eval_times=[0, 1]):
+    def __init__(self, *odeconvs, eval_times=[0, 1]):
         '''
 
         Input:
