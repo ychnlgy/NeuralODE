@@ -36,7 +36,7 @@ def main():
         torch.nn.BatchNorm2d(64),
         torch.nn.ReLU(),
 
-        *[model.OdeBlock(
+        model.OdeBlock(
 
             model.OdeConv2d(64, 64, 3, padding=1,
                 pre=torch.nn.Sequential(
@@ -55,7 +55,7 @@ def main():
                 )
             )
             
-        ) for i in range(6)],
+        ),
 
         torch.nn.AvgPool2d(2), # 8 -> 4
         torch.nn.ReLU(),
@@ -73,6 +73,8 @@ def main():
 
         torch.nn.Linear(1024, CLASSES)
     ).to(DEVICE)
+
+    print("Parameters: %d" % sum(map(torch.numel, (p for p in MODEL.parameters() if p.require_grad))))
 
     lossf = torch.nn.CrossEntropyLoss()
     optim = torch.optim.Adam(MODEL.parameters())
