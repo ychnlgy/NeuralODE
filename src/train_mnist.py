@@ -63,10 +63,8 @@ def main():
 
         torch.nn.BatchNorm2d(64),
         torch.nn.ReLU(),
-        
-        torch.nn.AvgPool2d(2), # 8 -> 4
 
-        torch.nn.Conv2d(64, 128, 3, padding=1),
+        torch.nn.Conv2d(64, 128, 3, padding=1, stride=2),
         torch.nn.BatchNorm2d(128),
         torch.nn.ReLU(),
 
