@@ -11,4 +11,4 @@ class RandomChance(torch.nn.Module):
         return torch.autograd.Variable(
             torch.rand(len(X), self.output_size),
             requires_grad = True
-        )
+        ).to(X.device)
