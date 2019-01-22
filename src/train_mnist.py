@@ -27,8 +27,12 @@ def main():
     MODEL = torch.nn.Sequential(
 
         torch.nn.Conv2d(CHANNELS, 32, 5, padding=2),
-        torch.nn.MaxPool2d(2), # 32 -> 16
         torch.nn.BatchNorm2d(32),
+        torch.nn.ReLU(),
+
+        torch.nn.Conv2d(32, 64, 3, padding=1),
+        torch.nn.MaxPool2d(2), # 32 -> 16
+        torch.nn.BatchNorm2d(64),
         torch.nn.ReLU(),
 
         torch.nn.Conv2d(32, 64, 3, padding=1),
@@ -56,8 +60,18 @@ def main():
             )
             
         ),
+
+        torch.nn.BatchNorm2d(64),
+        torch.nn.ReLU(),
         
-        torch.nn.AvgPool2d(8), # 4 -> 1
+        torch.nn.AvgPool2d(2), # 8 -> 4
+
+        torch.nn.Conv2d(64, 128, 3, padding=1),
+        torch.nn.BatchNorm2d(128),
+        torch.nn.ReLU(),
+
+        torch.nn.AvgPool2d(4), 
+        
         modules.Reshape(64),
 
         torch.nn.Linear(64, CLASSES),
