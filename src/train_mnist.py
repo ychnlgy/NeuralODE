@@ -64,15 +64,17 @@ def main():
         torch.nn.BatchNorm2d(64),
         torch.nn.ReLU(),
 
-        torch.nn.Conv2d(64, 128, 3, padding=1, stride=2),
+        torch.nn.AvgPool2d(2),
+
+        torch.nn.Conv2d(64, 128, 3, padding=1),
         torch.nn.BatchNorm2d(128),
         torch.nn.ReLU(),
 
         torch.nn.AvgPool2d(4), 
         
-        modules.Reshape(64),
+        modules.Reshape(128),
 
-        torch.nn.Linear(64, CLASSES),
+        torch.nn.Linear(128, CLASSES),
     ).to(DEVICE)
 
     print("Parameters: %d" % sum(torch.numel(p) for p in MODEL.parameters() if p.requires_grad))
