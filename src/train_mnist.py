@@ -55,7 +55,7 @@ def main():
                 )
             )
             
-        ) for i in range(6)]
+        ) for i in range(6)],
 
         torch.nn.AvgPool2d(2), # 8 -> 4
         torch.nn.ReLU(),
