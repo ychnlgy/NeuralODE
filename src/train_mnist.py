@@ -77,7 +77,7 @@ def main():
     print("Parameters: %d" % sum(map(torch.numel, (p for p in MODEL.parameters() if p.requires_grad))))
 
     lossf = torch.nn.CrossEntropyLoss()
-    optim = torch.optim.SGD(MODEL.parameters(), lr=0.1, momentum=0.9)
+    optim = torch.optim.Adam(MODEL.parameters(), lr=0.1)#, momentum=0.9)
     sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
 
     best_validation_score = float("inf")
