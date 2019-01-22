@@ -33,7 +33,7 @@ class OdeConv2d(torch.nn.Conv2d):
         N, C, W, H = X.size()
         t = torch.ones(N, 1, W, H).to(t.device) * t
         X = torch.cat([t, self.pre(X)], dim=1)
-        return self.post(super(ODEConv2d, self).forward(X))
+        return self.post(super(OdeConv2d, self).forward(X))
 
 class OdeSequential(torch.nn.Module):
 
