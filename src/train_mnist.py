@@ -147,4 +147,4 @@ def main():
 
             test_e /= n
 
-            print("Train: %.2f | Valid: %.2f | Test: %.2f" % (train_e, valid_e, test_e))
+            print("Train: %.4f | Valid: %.4f | Test: %.4f" % (train_e, valid_e, test_e))
