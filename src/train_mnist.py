@@ -74,7 +74,7 @@ def main():
         torch.nn.Linear(1024, CLASSES)
     ).to(DEVICE)
 
-    print("Parameters: %d" % sum(map(torch.numel, (p for p in MODEL.parameters() if p.requires_grad))))
+    print("Parameters: %d" % sum(torch.numel(p) for p in MODEL.parameters() if p.requires_grad))
 
     lossf = torch.nn.CrossEntropyLoss()
     optim = torch.optim.SGD(MODEL.parameters(), lr=0.1, momentum=0.9)

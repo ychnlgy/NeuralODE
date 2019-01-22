@@ -5,15 +5,17 @@ import constants
 
 from . import util
 
-def get(download=0):
+def get(download=0, augment=True):
     
     download = int(download)
     
     CLASSES = 10
     CHANNELS = 1
     IMAGESIZE = (32, 32)
+
+    t_augment = torchvision.transforms.RandomCrop(IMAGESIZE, padding=4) if augment else None
     
-    train = torchvision.datasets.MNIST(root=constants.DATA_ROOT, train=True, download=download)
+    train = torchvision.datasets.MNIST(root=constants.DATA_ROOT, train=True, download=download, transform=t_augment)
     train_X = train.train_data.view(-1, 1, 28, 28).float()/255.0
     train_X = util.convert_size(train_X, IMAGESIZE)
     train_Y = torch.LongTensor(train.train_labels)
