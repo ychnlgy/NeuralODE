@@ -1,6 +1,7 @@
 import torch
 import torchdiffeq
 
+TOL = 1e-3
 EMPTY = torch.nn.Sequential()
 
 class OdeConv2d(torch.nn.Conv2d):
@@ -72,4 +73,4 @@ class OdeBlock(torch.nn.Module):
             X_ti - torch Tensor of size (N, C', W', H'). Estimation of X at time point t[i].
 
         '''
-        return torchdiffeq.odeint_adjoint(self.f, X, self.t)[i]
+        return torchdiffeq.odeint_adjoint(self.f, X, self.t, rtol=TOL, atol=TOL)[i]
