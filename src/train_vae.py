@@ -12,7 +12,7 @@ def to_tensor(arr):
 @util.main
 def main():
 
-    X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d(ntotal=200)
+    X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d()
 
     X_truth, X, t_truth, t = tuple(
         map(
@@ -44,7 +44,7 @@ def main():
         with torch.no_grad():
             model.eval()
 
-            Xh = model(X, t_truth)
-            loss = lossf(Xh, X_truth)
+            Xh = model(X, t)
+            loss = lossf(Xh, X)
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
