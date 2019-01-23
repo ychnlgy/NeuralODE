@@ -12,7 +12,7 @@ def to_tensor(arr):
 @util.main
 def main():
 
-    X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d(200)
+    X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d(ntotal=100)
 
     X_truth, X, t_truth, t = tuple(
         map(
@@ -26,7 +26,7 @@ def main():
         )
     )
 
-    model = modules.VAE(input_size=2, hidden_size=32, z_size=16, output_size=2).to(DEVICE)
+    model = modules.VAE(input_size=2, hidden_size=20, z_size=10, output_size=2).to(DEVICE)
     lossf = torch.nn.MSELoss()
     optim = torch.optim.Adam(model.parameters(), lr=0.01)#, momentum=0.9)
 
@@ -44,7 +44,7 @@ def main():
         with torch.no_grad():
             model.eval()
 
-            Xh = model(X, t)
-            loss = lossf(Xh, X)
+            Xh = model(X, t_truth)
+            loss = lossf(Xh, X_truth)
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
