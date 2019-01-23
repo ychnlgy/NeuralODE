@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import torch
-import util, modules.vae, spiral
+import util, modules, spiral
 
 DEVICE = "cuda"
 EPOCHS = 200
