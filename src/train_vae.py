@@ -45,6 +45,6 @@ def main():
             model.eval()
 
             Xh = model(X, t_truth)
-            loss = lossf(Xh, X_truth)
+            loss = lossf(Xh, X)
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
