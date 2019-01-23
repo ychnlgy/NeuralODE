@@ -59,20 +59,25 @@ class Encoder(torch.nn.RNN):
         q_var = self._q_std ** 2 + EPS
         return torch.log(q_var) + self._q_miu**2/q_var
 
+class OdeFunction(torch.nn.Sequential):
+
+    def forward(self, t, X):
+        return super(OdeFunction, self).forward(X)
+
 class Decoder(torch.nn.Module):
 
-    def __init__(self, odenet, deciphernet):
+    def __init__(self, ode_function, deciphernet):
         
         '''
 
         Input:
-            odenet - vanilla torch.nn.Sequential, mapping D -> D.
+            ode_function - OdeFunction, mapping D -> D.
             deciphernet - vanilla torch.nn.Sequential, mapping D -> C (output size).
             
         '''
         
         super(Decoder, self).__init__()
-        self.odenet = odenet
+        self.ode_function = ode_function
         self.deciphernet = deciphernet
 
     def forward(self, z0, t):
@@ -88,7 +93,7 @@ class Decoder(torch.nn.Module):
         
         '''
         
-        pred_z = torchdiffeq.odeint_adjoint(self.odenet, z0, t) # S, B, D
+        pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t) # S, B, D
         pred_z = pred_z.transpose(0, 1) # B, S, D
         return self.deciphernet(pred_z)
 
