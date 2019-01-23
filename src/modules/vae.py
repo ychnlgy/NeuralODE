@@ -90,9 +90,9 @@ class Decoder(torch.nn.Module):
             t - torch Tensor of shape (S). Time points to calculate the trajectory of z.
         
         '''
-        
+        z0 = z0.contiguous()
         pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t) # S, B, D
-        pred_z = pred_z.transpose(0, 1) # B, S, D
+        pred_z = pred_z.transpose(0, 1).contiguous() # B, S, D
         return self.deciphernet(pred_z)
 
 class VAE(torch.nn.Module):
