@@ -44,7 +44,7 @@ def main():
         with torch.no_grad():
             model.eval()
 
-            Xh = model(X, t_truth)
+            Xh = model(X, t)
             loss = lossf(Xh, X)
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
