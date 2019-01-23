@@ -26,7 +26,7 @@ def main():
         )
     )
 
-    model = modules.VAE(input_size=2, hidden_size=32, z_size=16, output_size=2)
+    model = modules.VAE(input_size=2, hidden_size=32, z_size=16, output_size=2).to(DEVICE)
     lossf = torch.nn.MSELoss()
     optim = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
