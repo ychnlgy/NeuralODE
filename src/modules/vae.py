@@ -58,8 +58,9 @@ class Encoder(torch.nn.RNN):
         '''
         
         q_var = self._q_std ** 2 + EPS
-        return torch.log(q_var) + self._q_miu**2/q_var
-
+        kl_score = torch.log(q_var) + self._q_miu**2/q_var
+        return kl_score.sum()
+    
 class OdeFunction(torch.nn.Sequential):
 
     def forward(self, t, X):
