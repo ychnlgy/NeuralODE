@@ -114,7 +114,7 @@ class VAE(torch.nn.Module):
                 torch.nn.ReLU(),
                 torch.nn.Linear(hidden_size, hidden_size),
                 torch.nn.ReLU(),
-                torch.nn.Linear(hidden_size, z_size)
+                torch.nn.Linear(hidden_size, hidden_size)
             ),
             deciphernet = torch.nn.Sequential(
                 torch.nn.Linear(z_size, hidden_size),
