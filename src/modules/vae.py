@@ -126,4 +126,4 @@ class VAE(torch.nn.Module):
         return self.decoder(self.encoder(X), t)
     
     def loss(self, lossf, X, Xh):
-        return lossf(Xh, X) + self.encoder.loss()
+        return lossf(Xh, X) + 0.01 * self.encoder.loss()
