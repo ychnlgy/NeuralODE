@@ -27,7 +27,7 @@ class Encoder(torch.nn.RNN):
         N, S, D = X.size()
         reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
         out, _ = super(Encoder, self).forward(X[:,reversed_index])
-        z0 = out[:,-1].contigious()
+        z0 = out[:,-1].contiguous()
         half = z0.size(1)//2
         assert half > 0
 
