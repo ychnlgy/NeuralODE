@@ -34,7 +34,7 @@ class Encoder(torch.nn.RNN):
         # Save these values for computing the loss later.
         assert len(z0.shape) == 2
         self._q_miu = z0[:,:half]
-        self._q_std = z0[L,-half:]
+        self._q_std = z0[:,-half:]
         
         eps = torch.randn(self._q_std.size()).to(z0.device)
         return eps * self._q_std + self._q_miu
