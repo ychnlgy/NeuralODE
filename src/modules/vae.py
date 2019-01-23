@@ -39,7 +39,7 @@ class Encoder(torch.nn.RNN):
         eps = torch.randn(self._q_std.size()).to(z0.device)
         return eps * self._q_std + self._q_miu
 
-    def loss(self, q_miu, q_std):
+    def loss(self):
         
         '''
 
@@ -47,10 +47,6 @@ class Encoder(torch.nn.RNN):
             Returns a KL divergence analog of examples from distribution q
             from that of distribution p, which is a normal distribution
             centered at 0 with 1 standard deviation.
-
-        Input:
-            q_miu - samples from the q-distribution.
-            q_std - standard deviation of each sample.
 
         Output:
             kl_score - torch Tensor of size 0, scaler loss.
