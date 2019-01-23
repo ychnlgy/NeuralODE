@@ -1,7 +1,6 @@
 import torch
 
 import torchdiffeq
-from . import odenn
 
 EPS = 1e-8
 
