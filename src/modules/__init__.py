@@ -1,5 +1,7 @@
 from . import util
 
+from .vae import VAE
+
 from .NormalInit import NormalInit
 from .Savable import Savable
 from .RandomChance import RandomChance
