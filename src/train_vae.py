@@ -7,7 +7,7 @@ DEVICE = "cuda"
 EPOCHS = 200
 
 def to_tensor(arr):
-    return torch.from_numpy(arr).to(DEVICE)
+    return torch.from_numpy(arr).float().to(DEVICE)
 
 @util.main
 def main():
