@@ -26,8 +26,8 @@ class Encoder(torch.nn.RNN):
         
         N, S, D = X.size()
         reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
-        out, _ = super(Encoder, self).forward(X[:,reversed_index].contiguous())
-        z0 = out[:,-1].contiguous()
+        out, _ = super(Encoder, self).forward(X[:,reversed_index])
+        z0 = out[:,-1]
         half = z0.size(1)//2
         assert half > 0
 
@@ -90,9 +90,9 @@ class Decoder(torch.nn.Module):
             t - torch Tensor of shape (S). Time points to calculate the trajectory of z.
         
         '''
-        z0 = z0.contiguous()
+        
         pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t) # S, B, D
-        pred_z = pred_z.transpose(0, 1).contiguous() # B, S, D
+        pred_z = pred_z.transpose(0, 1) # B, S, D
         return self.deciphernet(pred_z)
 
 class VAE(torch.nn.Module):
