@@ -1,7 +1,7 @@
 import torch
 
-from . import torchdiffeq
-from .modules import odenn
+from ... import torchdiffeq
+from . import odenn
 
 EPS = 1e-8
 
