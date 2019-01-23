@@ -3,6 +3,7 @@ import torch
 import torchdiffeq
 
 EPS = 1e-8
+TOL = 1e-3
 
 class Encoder(torch.nn.RNN):
     
@@ -91,7 +92,7 @@ class Decoder(torch.nn.Module):
         
         '''
         
-        pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t) # S, B, D
+        pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t, rtol=TOL, atol=TOL) # S, B, D
         pred_z = pred_z.transpose(0, 1) # B, S, D
         return self.deciphernet(pred_z)
 
