@@ -37,7 +37,7 @@ class Encoder(torch.nn.RNN):
         self._q_std = z0[:,-half:]
         
         eps = torch.randn(self._q_std.size()).to(z0.device)
-        return eps * self._q_std + self._q_miu
+        return (eps * self._q_std + self._q_miu).contiguous()
 
     def loss(self):
         
@@ -92,7 +92,7 @@ class Decoder(torch.nn.Module):
         '''
         
         pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t) # S, B, D
-        pred_z = pred_z.transpose(0, 1).contiguous() # B, S, D
+        pred_z = pred_z.transpose(0, 1) # B, S, D
         return self.deciphernet(pred_z)
 
 class VAE(torch.nn.Module):
