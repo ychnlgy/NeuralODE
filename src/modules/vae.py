@@ -37,8 +37,6 @@ class Encoder(torch.nn.RNN):
         self._q_std = z0[L,-half:]
         
         eps = torch.randn(self._q_std.size()).to(z0.device)
-        print(eps.size())
-        input()
         return eps * self._q_std + self._q_miu
 
     def loss(self, q_miu, q_std):
@@ -113,11 +111,11 @@ class VAE(torch.nn.Module):
 
         self.decoder = Decoder(
             ode_function = OdeFunction(
-                torch.nn.Linear(hidden_size, hidden_size),
+                torch.nn.Linear(z_size, hidden_size),
                 torch.nn.ReLU(),
                 torch.nn.Linear(hidden_size, hidden_size),
                 torch.nn.ReLU(),
-                torch.nn.Linear(hidden_size, hidden_size)
+                torch.nn.Linear(hidden_size, z_size)
             ),
             deciphernet = torch.nn.Sequential(
                 torch.nn.Linear(z_size, hidden_size),
