@@ -38,6 +38,8 @@ def main():
         loss = model.loss(lossf, X, Xh)
 
         optim.zero_grad()
+        print(loss.shape)
+        input()
         loss.backward()
         optim.step()
 
