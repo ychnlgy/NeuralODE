@@ -110,7 +110,7 @@ class VAE(torch.nn.Module):
 
         self.decoder = Decoder(
             ode_function = OdeFunction(
-                torch.nn.Linear(hidden, hidden_size),
+                torch.nn.Linear(hidden_size, hidden_size),
                 torch.nn.ReLU(),
                 torch.nn.Linear(hidden_size, hidden_size),
                 torch.nn.ReLU(),
