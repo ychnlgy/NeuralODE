@@ -12,7 +12,7 @@ def to_tensor(arr):
 @util.main
 def main():
 
-    X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d(ntotal=100)
+    X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d(ntotal=200)
 
     X_truth, X, t_truth, t = tuple(
         map(
