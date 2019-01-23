@@ -3,7 +3,7 @@
 import torch
 import util, modules, spiral
 
-DEVICE = "cuda"
+DEVICE = "cpu"
 EPOCHS = 200
 
 def to_tensor(arr):
