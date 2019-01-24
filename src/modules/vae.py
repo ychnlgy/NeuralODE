@@ -111,8 +111,6 @@ class VAE(torch.nn.Module):
             ode_function = OdeFunction(
                 torch.nn.Linear(z_size, hidden_size),
                 torch.nn.ReLU(),
-                torch.nn.Linear(hidden_size, hidden_size),
-                torch.nn.ReLU(),
                 torch.nn.Linear(hidden_size, z_size)
             ),
             deciphernet = torch.nn.Sequential(
