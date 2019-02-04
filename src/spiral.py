@@ -60,6 +60,9 @@ def generate_spiral2d(
             1, [1. / (ntotal - 2 * nsample)] * (ntotal - int(2 * nsample)))
         t0_idx = numpy.argmax(t0_idx) + nsample
 
+        print(t0_idx)
+        input()
+
         cc = bool(numpy.random.rand() > 0.5)  # uniformly select rotation
         orig_traj = orig_traj_cc if cc else orig_traj_cw
         orig_trajs.append(orig_traj)
