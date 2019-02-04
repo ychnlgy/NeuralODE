@@ -6,7 +6,7 @@ def generate_spiral2d(
     nsample=100,
     start=0,
     stop=6*numpy.pi,  # approximately equal to 6pi
-    noise_std=0.1,
+    noise_std=0.3,
     a=0,
     b=0.3
 ):
@@ -43,17 +43,11 @@ def generate_spiral2d(
     rs_cw = a + b * 50.0 / zs_cw
     xs, ys = rs_cw * numpy.cos(zs_cw) - 5, rs_cw * numpy.sin(zs_cw)
     orig_traj_cw = numpy.stack((xs, ys), axis=1)
-
-    print(orig_traj_cw)
-    input()
-
+    
     zs_cc = orig_ts
     rw_cc = a + b * zs_cc
     xs, ys = rw_cc * numpy.cos(zs_cc) + 5, rw_cc * numpy.sin(zs_cc)
     orig_traj_cc = numpy.stack((xs, ys), axis=1)
-
-    print(orig_traj_cc)
-    input()
 
     # sample starting timestamps
     orig_trajs = []
