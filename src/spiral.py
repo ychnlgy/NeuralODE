@@ -1,5 +1,7 @@
 import numpy
 
+numpy.random.seed(1337)
+
 def generate_spiral2d(
     nspiral=1000,
     ntotal=500,
