@@ -2,7 +2,7 @@ import numpy
 
 def generate_spiral2d(
     nspiral=1000,
-    ntotal=500,
+    ntotal=1000,
     nsample=100,
     start=0,
     stop=6*numpy.pi,  # approximately equal to 6pi
