@@ -8,7 +8,7 @@ TOL = 1e-3
 class Encoder(torch.nn.RNN):
 
     def __init__(self, output_size, input_size, hidden_size, *args, **kwargs):
-        super(Encoder, self).__init__(*args, **kwargs)
+        super(Encoder, self).__init__(input_size, hidden_size, *args, **kwargs)
         self.compressor = torch.nn.Linear(hidden_size, output_size*2)
         self.output_size = output_size
     
