@@ -42,8 +42,10 @@ def main():
 
     model = modules.VAE(
         input_size=2,
+        rnn_layers=1,
+        rnn_hidden=25,
         hidden_size=20,
-        z_size=10,
+        z_size=4,
         kl_weight=0.1
     ).to(DEVICE)
     
@@ -59,7 +61,7 @@ def main():
         for X, _ in dataloader:
             X = X.to(DEVICE)
             Xh = model(X, t)
-            loss = model.loss(X)
+            loss = model.loss()
 
             optim.zero_grad()
             loss.backward()
@@ -72,7 +74,7 @@ def main():
             model.eval()
 
             Xh = model(X_train, t)
-            loss = model.loss(X_train)
+            loss = model.loss()
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
 

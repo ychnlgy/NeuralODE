@@ -96,14 +96,16 @@ class Decoder(torch.nn.Module):
 
 class VAE(torch.nn.Module):
     
-    def __init__(self, input_size, hidden_size, z_size, kl_weight):
+    def __init__(self, input_size, rnn_layers, rnn_hidden, hidden_size, z_size, kl_weight):
         super(VAE, self).__init__()
         self.encoder = Encoder(
             input_size = input_size,
-            hidden_size = hidden_size,
-            num_layers = 2,
+            hidden_size = rnn_hidden,
+            num_layers = rnn_layers,
             batch_first = True
         )
+
+        self.rnn_compress = torch.nn.Linear(rnn_hidden, z_size)
 
         self.decoder = Decoder(
             ode_function = OdeFunction(
@@ -124,11 +126,13 @@ class VAE(torch.nn.Module):
         self.kl_weight = kl_weight
     
     def forward(self, X, t):
-        self._X = self.decoder(self.encoder(X), t)
+        encoded = self.rnn_compress(self.encoder(X))
+        self._Xh = self.decoder(encoded, t)
+        self._X = X
         return self._X
     
-    def loss(self, X):
-        loss = self.lossf(self._X, X)
+    def loss(self):
+        loss = self.lossf(self._Xh, self._X)
         if self.training:
             loss += self.kl_weight * self.encoder.loss()
         return loss
