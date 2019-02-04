@@ -6,6 +6,11 @@ EPS = 1e-8
 TOL = 1e-3
 
 class Encoder(torch.nn.RNN):
+
+    def __init__(self, output_size, input_size, hidden_size, *args, **kwargs):
+        super(Encoder, self).__init__(*args, **kwargs)
+        self.compressor = torch.nn.Linear(hidden_size, output_size*2)
+        self.output_size = output_size
     
     def forward(self, X):
         
@@ -28,14 +33,12 @@ class Encoder(torch.nn.RNN):
         N, S, D = X.size()
         reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
         out, _ = super(Encoder, self).forward(X[:,reversed_index])
-        z0 = out[:,-1]
-        half = z0.size(1)//2
-        assert half > 0
+        z0 = self.compressor(out[:,-1])
 
         # Save these values for computing the loss later.
         assert len(z0.shape) == 2
-        self._q_miu = z0[:,:half]
-        self._q_std = z0[:,-half:]
+        self._q_miu = z0[:,:self.output_size]
+        self._q_std = z0[:,self.output_size:]
         
         eps = torch.randn(self._q_std.size()).to(z0.device)
         return eps * self._q_std + self._q_miu
@@ -99,6 +102,7 @@ class VAE(torch.nn.Module):
     def __init__(self, input_size, rnn_layers, rnn_hidden, hidden_size, z_size, kl_weight):
         super(VAE, self).__init__()
         self.encoder = Encoder(
+            output_size = z_size,
             input_size = input_size,
             hidden_size = rnn_hidden,
             num_layers = rnn_layers,
