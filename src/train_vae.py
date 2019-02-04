@@ -51,11 +51,12 @@ def main():
     for epoch in range(EPOCHS):
 
         model.train()
+        optim.zero_grad()
 
         Xh = model(X, t)
         loss = model.loss()
 
-        optim.zero_grad()
+        
         loss.backward()
         optim.step()
 
