@@ -94,6 +94,7 @@ class Decoder(torch.nn.Module):
         
         pred_z = torchdiffeq.odeint(self.ode_function, z0, t) # S, B, D
         pred_z = pred_z.transpose(1, 0) # B, S, D
+        print(pred_z.shape)
         return self.deciphernet(pred_z)
 
 class VAE(torch.nn.Module):
