@@ -105,7 +105,7 @@ class VAE(torch.nn.Module):
             batch_first = True
         )
 
-        self.rnn_compress = torch.nn.Linear(rnn_hidden, z_size)
+        self.rnn_compress = torch.nn.Linear(rnn_hidden//2, z_size)
 
         self.decoder = Decoder(
             ode_function = OdeFunction(
