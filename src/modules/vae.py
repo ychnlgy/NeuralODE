@@ -109,14 +109,14 @@ class VAE(torch.nn.Module):
         self.decoder = Decoder(
             ode_function = OdeFunction(
                 torch.nn.Linear(z_size, hidden_size),
-                torch.nn.ELU(),
+                torch.nn.ELU(inplace=True),
                 torch.nn.Linear(hidden_size, hidden_size),
-                torch.nn.ELU(),
+                torch.nn.ELU(inplace=True),
                 torch.nn.Linear(hidden_size, z_size)
             ),
             deciphernet = torch.nn.Sequential(
                 torch.nn.Linear(z_size, hidden_size),
-                torch.nn.ReLU(),
+                torch.nn.ReLU(inplace=True),
                 torch.nn.Linear(hidden_size, input_size)
             )
         )
