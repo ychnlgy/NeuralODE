@@ -55,7 +55,7 @@ class Encoder(torch.nn.RNN):
             kl_score - torch Tensor of size 0, scaler loss.
         
         '''
-        kl_score = -self._q_std + torch.exp(self._q_std) + self._q_miu**2
+        kl_score = -self._q_std + torch.exp(self._q_std/2.0) + self._q_miu**2
         return kl_score.mean()
     
 class OdeFunction(torch.nn.Sequential):
