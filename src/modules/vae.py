@@ -2,9 +2,6 @@ import torch
 
 import torchdiffeq
 
-EPS = 1e-8
-TOL = 1e-3
-
 class Encoder(torch.nn.RNN):
 
     def __init__(self, output_size, input_size, hidden_size, *args, **kwargs):
@@ -31,6 +28,7 @@ class Encoder(torch.nn.RNN):
         '''
         
         N, S, D = X.size()
+        print(N, S, D)
         reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
         out, _ = super(Encoder, self).forward(X[:,reversed_index])
         z0 = self.compressor(out[:,-1])
