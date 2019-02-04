@@ -12,7 +12,7 @@ class Encoder(torch.nn.RNN):
         '''
 
         Description:
-            Returns z0 sampled from a distribution with mean(z0) and std(z0),
+            Returns z0 sampled from a distribution with mean(z0) = 0 and std(z0) = 1,
             where z0 is the latent encoding of reverse sequences in X.
 
         Input:
@@ -45,7 +45,7 @@ class Encoder(torch.nn.RNN):
         '''
 
         Description:
-            Returns a KL divergence analog of examples from distribution q
+            Returns a KL divergence of examples from distribution q
             from that of distribution p, which is a normal distribution
             centered at 0 with 1 standard deviation.
 
@@ -53,10 +53,8 @@ class Encoder(torch.nn.RNN):
             kl_score - torch Tensor of size 0, scaler loss.
         
         '''
-        
-        q_var = self._q_std ** 2 + EPS
-        kl_score = torch.log(q_var) + self._q_miu**2/q_var
-        return kl_score.sum()
+        kl_score = -self._q_std + torch.exp(self._q_std) + self._q_miu**2
+        return kl_score.mean()
     
 class OdeFunction(torch.nn.Sequential):
 
@@ -92,13 +90,13 @@ class Decoder(torch.nn.Module):
         
         '''
         
-        pred_z = torchdiffeq.odeint_adjoint(self.ode_function, z0, t, rtol=TOL, atol=TOL) # S, B, D
+        pred_z = torchdiffeq.odeint(self.ode_function, z0, t) # S, B, D
         pred_z = pred_z.transpose(0, 1) # B, S, D
         return self.deciphernet(pred_z)
 
 class VAE(torch.nn.Module):
     
-    def __init__(self, input_size, hidden_size, z_size, output_size):
+    def __init__(self, input_size, hidden_size, z_size, kl_weight):
         super(VAE, self).__init__()
         self.encoder = Encoder(
             input_size = input_size,
@@ -110,18 +108,24 @@ class VAE(torch.nn.Module):
         self.decoder = Decoder(
             ode_function = OdeFunction(
                 torch.nn.Linear(z_size, hidden_size),
-                torch.nn.ReLU(),
+                torch.nn.ELU(),
+                torch.nn.Linear(hidden_size, hidden_size),
+                torch.nn.ELU(),
                 torch.nn.Linear(hidden_size, z_size)
             ),
             deciphernet = torch.nn.Sequential(
                 torch.nn.Linear(z_size, hidden_size),
                 torch.nn.ReLU(),
-                torch.nn.Linear(hidden_size, output_size)
+                torch.nn.Linear(hidden_size, input_size)
             )
         )
+
+        self.lossf = torch.nn.MSELoss()
+        self.kl_weight = kl_weight
     
     def forward(self, X, t):
-        return self.decoder(self.encoder(X), t)
+        self._X = self.decoder(self.encoder(X), t)
+        return self._X
     
-    def loss(self, lossf, X, Xh):
-        return lossf(Xh, X) + 0.00 * self.encoder.loss()
+    def loss(self, X):
+        return lossf(self._X, X) + self.kl_weight * self.encoder.loss()
