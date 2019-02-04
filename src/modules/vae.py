@@ -132,5 +132,5 @@ class VAE(torch.nn.Module):
         return self._X
     
     def loss(self):
-        return self.lossf(self._Xh, self._X)
+        return self.encoder.loss()
         return self.lossf(self._Xh, self._X) + self.kl_weight * self.encoder.loss()
