@@ -49,8 +49,6 @@ def main():
     #sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
 
     for epoch in range(EPOCHS):
-
-        model.train()
         
         Xh = model(X, t)
         loss = model.loss()

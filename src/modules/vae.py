@@ -127,11 +127,9 @@ class VAE(torch.nn.Module):
     def forward(self, X, t):
         self._X = X
         z0 = self.encoder(X)
-        print("yoga bear", z0.shape, z0[0])
-        input()
         self._Xh = self.decoder(z0, t)
         return self._Xh
     
     def loss(self):
-        return self.lossf(self._Xh, self._X)
+        return self.lossf(self._Xh, torch.zeros_like(self._Xh))#self._X)
         return self.lossf(self._Xh, self._X) + self.kl_weight * self.encoder.loss()
