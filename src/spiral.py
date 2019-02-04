@@ -33,6 +33,8 @@ def generate_spiral2d(
 
     numpy.random.seed(1337)
 
+    print([numpy.random.rand() for i in range(10)])
+    input()
     # add 1 all timestamps to avoid division by 0
     orig_ts = numpy.linspace(start, stop, num=ntotal)
     samp_ts = orig_ts[:nsample]
