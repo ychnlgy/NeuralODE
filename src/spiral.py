@@ -34,6 +34,8 @@ def generate_spiral2d(
     # add 1 all timestamps to avoid division by 0
     orig_ts = numpy.linspace(start, stop, num=ntotal)
     samp_ts = orig_ts[:nsample]
+    print(samp_ts)
+    input()
 
     # generate clock-wise and counter clock-wise spirals in observation space
     # with two sets of time-invariant latent dynamics
