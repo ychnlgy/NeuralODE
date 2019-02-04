@@ -34,6 +34,9 @@ def main():
     X_truth = flip(X_truth, 1)
     X = flip(X, 1)
 
+    print(t_observe_arr)
+    input()
+
     model = modules.VAE(
         input_size=2,
         rnn_layers=1,
