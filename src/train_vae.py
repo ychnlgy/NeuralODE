@@ -1,18 +1,13 @@
 #!/usr/bin/python3
 
 import torch
-import util, modules, spiral
+import util, modules, spiral, tensortools
 
 DEVICE = "cuda"
 EPOCHS = 200
 
 def to_tensor(arr):
     return torch.from_numpy(arr).float().to(DEVICE)
-
-def flip(t, axis):
-    c = t.size(axis)
-    i = torch.arange(-1, -c-1, -1).long().to(t.device)
-    return t.transpose(0, axis)[i].transpose(0, axis)
 
 @util.main
 def main():
@@ -33,8 +28,8 @@ def main():
         )
     )
 
-    X_truth = flip(X_truth, 1)
-    X = flip(X, 1)
+    X_truth = tensortools.flip(X_truth, 1)
+    X = tensortools.flip(X, 1)
 
     model = modules.VAE(
         input_size=2,
@@ -46,7 +41,6 @@ def main():
     ).to(DEVICE)
     
     optim = torch.optim.Adam(model.parameters(), lr=0.01)
-    #sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
 
     for epoch in range(EPOCHS):
         
