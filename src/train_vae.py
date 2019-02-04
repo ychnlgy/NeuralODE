@@ -51,21 +51,12 @@ def main():
     for epoch in range(EPOCHS):
 
         model.train()
-        optim.zero_grad()
-
+        
         Xh = model(X, t)
         loss = model.loss()
 
-        
+        optim.zero_grad()
         loss.backward()
         optim.step()
 
-        with torch.no_grad():
-            model.eval()
-
-            Xh = model(X, t)
-            loss = model.loss()
-
-            print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
-
-            #sched.step(loss)
+        print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
