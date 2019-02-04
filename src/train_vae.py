@@ -17,6 +17,8 @@ def flip(t, axis):
 @util.main
 def main():
 
+    torch.manual_seed(1337)
+
     X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d()
 
     X_truth, X, t_truth, t = tuple(
@@ -42,9 +44,6 @@ def main():
         z_size=4,
         kl_weight=0.1
     ).to(DEVICE)
-
-    print(sum(map(torch.numel, model.parameters())))
-    input()
     
     optim = torch.optim.Adam(model.parameters(), lr=0.01)
     #sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
