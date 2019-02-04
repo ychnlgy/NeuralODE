@@ -44,15 +44,21 @@ def generate_spiral2d(
     xs, ys = rs_cw * numpy.cos(zs_cw) - 5, rs_cw * numpy.sin(zs_cw)
     orig_traj_cw = numpy.stack((xs, ys), axis=1)
 
+    print(orig_traj_cw)
+    input()
+
     zs_cc = orig_ts
     rw_cc = a + b * zs_cc
     xs, ys = rw_cc * numpy.cos(zs_cc) + 5, rw_cc * numpy.sin(zs_cc)
     orig_traj_cc = numpy.stack((xs, ys), axis=1)
 
+    print(orig_traj_cc)
+    input()
+
     # sample starting timestamps
     orig_trajs = []
     samp_trajs = []
-    print(nspiral)
+
     for _ in range(nspiral):
         
         # don't sample t0 very near the start or the end
@@ -67,9 +73,6 @@ def generate_spiral2d(
         samp_traj = orig_traj[t0_idx:t0_idx + nsample, :].copy()
         samp_traj += numpy.random.randn(*samp_traj.shape) * noise_std
         samp_trajs.append(samp_traj)
-
-        print(samp_traj)
-        input()
 
     # batching for sample trajectories is good for RNN; batching for original
     # trajectories only for ease of indexing
