@@ -127,6 +127,8 @@ class VAE(torch.nn.Module):
         self.kl_weight = kl_weight
     
     def forward(self, X, t):
+        print(t)
+        input()
         self._Xh = self.decoder(self.encoder(X), t)
         self._X = X
         return self._X
