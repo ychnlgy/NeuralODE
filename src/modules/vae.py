@@ -127,7 +127,7 @@ class VAE(torch.nn.Module):
     def forward(self, X, t):
         self._X = X
         self._Xh = self.decoder(self.encoder(X), t)
-        return self._X
+        return self._Xh
     
     def loss(self):
         return self.encoder.loss() #self.lossf(self._Xh, self._X)
