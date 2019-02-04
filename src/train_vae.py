@@ -50,9 +50,6 @@ def main():
 
         model.train()
 
-        print(X[0])
-        input()
-
         Xh = model(X, t)
         loss = model.loss()
 
