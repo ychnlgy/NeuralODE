@@ -41,7 +41,7 @@ class Encoder(torch.nn.RNN):
         self._q_std = z0[:,self.output_size:]
         
         eps = torch.randn(self._q_std.size()).to(z0.device)
-        return eps * self._q_std + self._q_miu
+        return eps * torch.exp(self._q_std/2.0) + self._q_miu
 
     def loss(self):
         
