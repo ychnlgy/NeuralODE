@@ -36,7 +36,6 @@ class Encoder(torch.nn.RNN):
         z0 = self.compressor(out[:,-1])
 
         # Save these values for computing the loss later.
-        assert len(z0.shape) == 2
         self._q_miu = z0[:,:self.output_size]
         self._q_std = z0[:,self.output_size:]
         
@@ -133,7 +132,4 @@ class VAE(torch.nn.Module):
         return self._X
     
     def loss(self):
-        loss = self.lossf(self._Xh, self._X)
-        if self.training:
-            loss += self.kl_weight * self.encoder.loss()
-        return loss
+        return self.lossf(self._Xh, self._X) + self.kl_weight * self.encoder.loss()
