@@ -33,8 +33,6 @@ def generate_spiral2d(
 
     numpy.random.seed(1337)
 
-    print([numpy.random.rand() for i in range(10)])
-    input()
     # add 1 all timestamps to avoid division by 0
     orig_ts = numpy.linspace(start, stop, num=ntotal)
     samp_ts = orig_ts[:nsample]
@@ -55,6 +53,10 @@ def generate_spiral2d(
     orig_trajs = []
     samp_trajs = []
     for _ in range(nspiral):
+
+        print(numpy.random.rand())
+        input()
+        
         # don't sample t0 very near the start or the end
         t0_idx = numpy.random.multinomial(
             1, [1. / (ntotal - 2 * nsample)] * (ntotal - int(2 * nsample)))
