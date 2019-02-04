@@ -32,7 +32,7 @@ def main():
     )
 
     X_truth = flip(X_truth, 1)
-    X= flip(X, 1)
+    X = flip(X, 1)
 
     model = modules.VAE(
         input_size=2,
@@ -43,7 +43,7 @@ def main():
         kl_weight=0.1
     ).to(DEVICE)
     
-    optim = torch.optim.Adam(model.parameters())
+    optim = torch.optim.Adam(model.parameters(), lr=0.01)
     #sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
 
     for epoch in range(EPOCHS):
