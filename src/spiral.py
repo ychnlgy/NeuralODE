@@ -1,7 +1,5 @@
 import numpy
 
-numpy.random.seed(1337)
-
 def generate_spiral2d(
     nspiral=1000,
     ntotal=500,
@@ -32,6 +30,8 @@ def generate_spiral2d(
       third element is timestamps of size (ntotal,),
       and fourth element is timestamps of size (nsample,)
     """
+
+    numpy.random.seed(1337)
 
     # add 1 all timestamps to avoid division by 0
     orig_ts = numpy.linspace(start, stop, num=ntotal)
