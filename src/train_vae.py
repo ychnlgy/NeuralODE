@@ -18,6 +18,7 @@ def flip(t, axis):
 def main():
 
     A = torch.rand(4, 5)
+    print(A)
     print(flip(A, 0))
     print(flip(A, 1))
     input()
