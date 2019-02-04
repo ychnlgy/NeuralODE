@@ -44,7 +44,7 @@ def main():
     ).to(DEVICE)
     
     optim = torch.optim.Adam(model.parameters())
-    sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
+    #sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
 
     for epoch in range(EPOCHS):
 
@@ -65,4 +65,4 @@ def main():
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
 
-            sched.step(loss)
+            #sched.step(loss)
