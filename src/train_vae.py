@@ -8,7 +8,7 @@ EPOCHS = 200
 BATCHSIZE = 100
 
 def to_tensor(arr):
-    return torch.from_numpy(arr).float().to(DEVICE)
+    return torch.from_numpy(arr).float()
 
 def flip(t, axis):
     c = t.size(axis)
@@ -35,7 +35,10 @@ def main():
     X_truth = flip(X_truth, 1)
     X_train = flip(X_train, 1)
 
-    dataloader = create_loader(BATCHSIZE, X_train)
+    dataloader = util.dataset.create_loader(BATCHSIZE, X_train)
+
+    X_train = X_train.to(DEVICE)
+    t_observe_arr = t_observe_arr.to(DEVICE)
 
     model = modules.VAE(
         input_size=2,
@@ -54,8 +57,9 @@ def main():
         n = e = 0.0
 
         for X, _ in dataloader:
+            X = X.to(DEVICE)
             Xh = model(X, t)
-            loss = model.loss(lossf, X, Xh)
+            loss = model.loss(X)
 
             optim.zero_grad()
             loss.backward()
@@ -68,7 +72,7 @@ def main():
             model.eval()
 
             Xh = model(X_train, t)
-            loss = lossf(Xh, X)
+            loss = model.loss(X_train)
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
 
