@@ -38,7 +38,7 @@ def main():
     dataloader = datasets.util.create_loader(BATCHSIZE, X_train)
 
     X_train = X_train.to(DEVICE)
-    t_observe_arr = t_observe_arr.to(DEVICE)
+    t = t.to(DEVICE)
 
     model = modules.VAE(
         input_size=2,
