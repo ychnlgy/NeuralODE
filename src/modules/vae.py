@@ -28,7 +28,6 @@ class Encoder(torch.nn.RNN):
         '''
         
         N, S, D = X.size()
-        print(N, S, D)
         reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
         out, _ = super(Encoder, self).forward(X[:,reversed_index])
         z0 = self.compressor(out[:,-1])
@@ -36,6 +35,7 @@ class Encoder(torch.nn.RNN):
         # Save these values for computing the loss later.
         self._q_miu = z0[:,:self.output_size]
         self._q_std = z0[:,self.output_size:]
+        assert self._q_std.size() == self._q_miu.size()
         
         eps = torch.randn(self._q_std.size()).to(z0.device)
         return eps * torch.exp(self._q_std/2.0) + self._q_miu

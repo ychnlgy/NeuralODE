@@ -54,8 +54,6 @@ def main():
 
         Xh = model(X, t)
         loss = model.loss()
-        print(loss)
-        input()
 
         optim.zero_grad()
         loss.backward()
