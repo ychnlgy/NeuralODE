@@ -128,4 +128,4 @@ class VAE(torch.nn.Module):
         return self._X
     
     def loss(self, X):
-        return lossf(self._X, X) + self.kl_weight * self.encoder.loss()
+        return self.lossf(self._X, X) + self.kl_weight * self.encoder.loss()
