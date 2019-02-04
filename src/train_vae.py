@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import torch
-import util, modules, spiral
+import util, modules, spiral, datasets
 
 DEVICE = "cuda"
 EPOCHS = 200
@@ -35,7 +35,7 @@ def main():
     X_truth = flip(X_truth, 1)
     X_train = flip(X_train, 1)
 
-    dataloader = util.dataset.create_loader(BATCHSIZE, X_train)
+    dataloader = datasets.util.create_loader(BATCHSIZE, X_train)
 
     X_train = X_train.to(DEVICE)
     t_observe_arr = t_observe_arr.to(DEVICE)
