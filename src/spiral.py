@@ -52,10 +52,8 @@ def generate_spiral2d(
     # sample starting timestamps
     orig_trajs = []
     samp_trajs = []
+    print(nspiral)
     for _ in range(nspiral):
-
-        print(numpy.random.rand())
-        input()
         
         # don't sample t0 very near the start or the end
         t0_idx = numpy.random.multinomial(
