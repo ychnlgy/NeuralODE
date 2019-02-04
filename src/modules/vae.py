@@ -2,6 +2,11 @@ import torch
 
 import torchdiffeq
 
+def flip(t, axis):
+    c = t.size(axis)
+    i = torch.arange(-1, -c-1, -1).long().to(t.device)
+    return t.transpose(0, axis)[i].transpose(0, axis)
+
 class Encoder(torch.nn.RNN):
 
     def __init__(self, output_size, input_size, hidden_size, *args, **kwargs):
@@ -28,8 +33,8 @@ class Encoder(torch.nn.RNN):
         '''
         
         N, S, D = X.size()
-        reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
-        out, _ = super(Encoder, self).forward(X[:,reversed_index])
+        #reversed_index = torch.arange(-1, -S-1, -1).long().to(X.device)
+        out, _ = super(Encoder, self).forward(flip(X, 1))#X[:,reversed_index])
         z0 = self.compressor(out[:,-1])
 
         # Save these values for computing the loss later.
