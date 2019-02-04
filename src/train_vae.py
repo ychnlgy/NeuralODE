@@ -17,12 +17,6 @@ def flip(t, axis):
 @util.main
 def main():
 
-    A = torch.rand(4, 5)
-    print(A)
-    print(flip(A, 0))
-    print(flip(A, 1))
-    input()
-
     X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d()
 
     X_truth, X, t_truth, t = tuple(
