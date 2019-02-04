@@ -126,7 +126,10 @@ class VAE(torch.nn.Module):
     
     def forward(self, X, t):
         self._X = X
-        self._Xh = self.decoder(self.encoder(X), t)
+        z0 = self.encoder(X)
+        print(z0.shape, z0[0])
+        input()
+        self._Xh = self.decoder(z0, t)
         return self._Xh
     
     def loss(self):
