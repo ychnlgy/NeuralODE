@@ -1,14 +1,13 @@
 #!/usr/bin/python3
 
 import torch
-import util, modules, spiral, datasets
+import util, modules, spiral
 
 DEVICE = "cuda"
 EPOCHS = 200
-BATCHSIZE = 100
 
 def to_tensor(arr):
-    return torch.from_numpy(arr).float()
+    return torch.from_numpy(arr).float().to(DEVICE)
 
 def flip(t, axis):
     c = t.size(axis)
@@ -20,7 +19,7 @@ def main():
 
     X_truth_arr, X_observe_arr, t_truth_arr, t_observe_arr = spiral.generate_spiral2d()
 
-    X_truth, X_train, t_truth, t = tuple(
+    X_truth, X, t_truth, t = tuple(
         map(
             to_tensor, 
             [
@@ -33,12 +32,7 @@ def main():
     )
 
     X_truth = flip(X_truth, 1)
-    X_train = flip(X_train, 1)
-
-    dataloader = datasets.util.create_loader(BATCHSIZE, X_train)
-
-    X_train = X_train.to(DEVICE)
-    t = t.to(DEVICE)
+    X= flip(X, 1)
 
     model = modules.VAE(
         input_size=2,
@@ -56,24 +50,17 @@ def main():
 
         model.train()
 
-        n = e = 0.0
+        Xh = model(X, t)
+        loss = model.loss()
 
-        for X, _ in dataloader:
-            X = X.to(DEVICE)
-            Xh = model(X, t)
-            loss = model.loss()
-
-            optim.zero_grad()
-            loss.backward()
-            optim.step()
-
-            n += 1.0
-            e += loss.item()
+        optim.zero_grad()
+        loss.backward()
+        optim.step()
 
         with torch.no_grad():
             model.eval()
 
-            Xh = model(X_train, t)
+            Xh = model(X, t)
             loss = model.loss()
 
             print("Epoch %d extrapolation loss: %.4f" % (epoch, loss.item()))
