@@ -42,6 +42,9 @@ def main():
         z_size=4,
         kl_weight=0.1
     ).to(DEVICE)
+
+    print(sum(map(torch.numel, model.parameters())))
+    input()
     
     optim = torch.optim.Adam(model.parameters(), lr=0.01)
     #sched = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)

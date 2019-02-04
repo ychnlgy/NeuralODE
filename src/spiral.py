@@ -73,9 +73,6 @@ def generate_spiral2d(
     orig_trajs = numpy.stack(orig_trajs, axis=0)
     samp_trajs = numpy.stack(samp_trajs, axis=0)
 
-    print(samp_trajs)
-    input()
-
     return orig_trajs, samp_trajs, orig_ts, samp_ts
 
 if __name__ == "__main__":
